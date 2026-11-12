@@ -102,3 +102,22 @@ code as published in this repository; work delivered to you under
 contract — including any official addon activated for a fee or custom
 addon authored for you — is delivered under that agreement, not under the
 license's reciprocity terms.
+
+## Built for generative AI image pipelines
+
+A GenAI worker image is big: CUDA base layers plus the model runtime
+routinely land at 5-8 GB, and Karpenter provisions fresh GPU nodes on
+every burst — every one of those nodes pulls the image.
+
+- **In-region pulls**: the repository lives in the same account/region as
+  the cluster, so cold nodes stop crawling cross-registry over the
+  internet; minutes of per-node pull time become seconds-to-minutes.
+- **IMMUTABLE + digest pinning = reproducible AI** — every replica of a
+  generation job pulls the exact digest you tested; a re-push can never
+  silently change a running model server.
+- **CI push roles, main only** — the training/packaging pipeline pushes
+  new model-server builds through an OIDC-trusted role scoped to this
+  repo's ARN; nothing else can write your inference images.
+- **Co-locate with the fast-storage + gpu addons** — pinned image
+  (this repo) + provisioned weights volume (fast-storage-class) +
+  dedicated GPU pool (gpu) is the full per-tenant GenAI serving stack.
