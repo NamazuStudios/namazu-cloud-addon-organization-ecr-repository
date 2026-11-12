@@ -77,3 +77,18 @@ repository_arn, push_role_arns}`.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## License & provenance
+
+**AGPL-3.0** — see [LICENSE](LICENSE).
+
+This is an **official Namazu Cloud addon** — it can be activated for a
+**fixed fee** (the activation + review process is documented in the
+[namazu-cloud-addon-example template's ADDONS.md](https://github.com/NamazuStudios/namazu-cloud-addon-example/blob/main/ADDONS.md)).
+
+The repository is made public for **transparency and visibility**: it is
+deeply connected to Namazu Cloud — the org-namespaced repository scheme,
+the per-namespace pull boundary, and the CI push roles here are the
+platform's tenant-registry story. It is written for Namazu Studios and
+Namazu Cloud use; derivative works are expected to come back upstream to
+`NamazuStudios`, no exceptions.
