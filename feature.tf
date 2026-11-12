@@ -124,7 +124,11 @@ resource "aws_ecr_repository_policy" "pull" {
 resource "aws_iam_role" "push" {
   for_each = toset(var.github_repositories)
 
-  name                 = "addon-ecr-push-${local.sanitize}-${replace(replace(lower(each.value), "/[^a-z0-9-]/", "-"), "/-+/", "-")}"
+  # Role names are ACCOUNT-WIDE in IAM, and the shared account hosts every
+  # org — so the name carries the org id (the boundary) plus a short hash of
+  # the (repository, github repo) pair, keeping under IAM's 64-char limit.
+  # Readability lives in the tags.
+  name                 = "addon-ecr-push-${var.organization_id}-${substr(sha256("${var.repository_name}/${each.value}"), 0, 12)}"
   max_session_duration = 3600
 
   assume_role_policy = jsonencode({
@@ -143,7 +147,12 @@ resource "aws_iam_role" "push" {
     }]
   })
 
-  tags = { "ManagedBy" = "terraform" }
+  tags = {
+    "ManagedBy"                               = "terraform"
+    "cloud.namazustudios.com/organization_id" = var.organization_id
+    "RepositoryName"                          = var.repository_name
+    "GithubRepo"                              = each.value
+  }
 }
 
 resource "aws_iam_role_policy" "push" {

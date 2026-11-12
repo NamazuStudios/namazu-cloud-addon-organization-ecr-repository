@@ -54,11 +54,15 @@ One entry per repository, each independently sweepable:
 `iam.policy.json` (feature grants): `ecr:CreateRepository/DescribeRepositories/
 DeleteRepository/PutLifecyclePolicy/GetLifecyclePolicy/SetRepositoryPolicy/
 GetRepositoryPolicy/DeleteRepositoryPolicy/TagResource/ListTagsForResource`
-scoped to `arn:aws:ecr:*:*:repository/<organization-id>/*`; push-role
+scoped to `arn:aws:ecr:us-east-1:*:repository/<organization-id>/*` (ECR is
+regional; the org id IS the name boundary in the shared account); push-role
 management (`iam:CreateRole/DeleteRole/TagRole/UntagRole/PutRolePolicy/
 GetRolePolicy/DeleteRolePolicy/GetRole`) scoped to
-`arn:aws:iam::*:role/addon-ecr-push-*`; `iam:GetOpenIDConnectProvider` on
-the GitHub OIDC provider. No Kubernetes RBAC — this addon is AWS-only.
+`arn:aws:iam::*:role/addon-ecr-push-<organization-id>-*` (IAM ARNs are
+global, so the org id in the NAME is the qualifier; role names hash the
+repository/pair to stay under IAM's 64-char limit — readability lives in
+the role tags); `iam:GetOpenIDConnectProvider` on the GitHub OIDC
+provider. No Kubernetes RBAC — this addon is AWS-only.
 
 **Sweep safety:** sweep destroys from state — deleting a repository that
 still holds images requires the executor to hold `ecr:DeleteRepository`
