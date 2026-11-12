@@ -1,0 +1,23 @@
+# manifest.yaml — THIS addon's input declaration (contract clause 10).
+#
+# The one generic fact this addon needs (the tenant's node role — the
+# per-namespace pull principal) is bound from the tenant baseline. Everything
+# per-install (repository name, CI repos, extra readers) rides the
+# consuming fork's matrix entry via the runner's `contract` input.
+#
+# `visibility: shared` makes this addon consumable by any org fork; the
+# repository is namespaced under THAT fork's organization id.
+
+description: >-
+  Per-organization ECR repository in the shared hosting account:
+  <organization-id>/<repository-name>, IMMUTABLE + digest-pin-friendly
+  lifecycle, per-namespace pull enforcement (repository policy grants pull
+  only to the installing tenant's node role and named IRSA principals), and
+  one OIDC-trusted push role per input GitHub repository (main only) scoped
+  to this repo's ARN. Org-attributed tags make shared-account spend auditable.
+visibility: shared
+display: Organization ECR Repository
+input:
+  # The tenant's node role — a generic platform fact that exists regardless
+  # of this addon; the per-namespace pull boundary hangs off it.
+  karpenter_node_role_name: $instance.karpenter_node_role_name
