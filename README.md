@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://cloud.namazustudios.com"><img src="namazu-cloud.png" alt="Namazu Cloud" width="280"></a>
+</p>
+
 # namazu-cloud-addon-organization-ecr-repository
 
 Per-organization **ECR repository** as a shared addon, in Namazu's shared
