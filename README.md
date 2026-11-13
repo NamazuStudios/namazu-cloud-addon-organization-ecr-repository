@@ -127,3 +127,11 @@ every burst — every one of those nodes pulls the image.
 - **Co-locate with the fast-storage + gpu addons** — pinned image
   (this repo) + provisioned weights volume (fast-storage-class) +
   dedicated GPU pool (gpu) is the full per-tenant GenAI serving stack.
+<p align="center">
+  <a href="https://cloud.namazustudios.com">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="aws-partner-dark.png">
+      <img src="aws-partner-light.png" alt="AWS Partner" width="200">
+    </picture>
+  </a>
+</p>
